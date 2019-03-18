@@ -9,7 +9,12 @@ BOARDWIDTH = 48
 BOARDHEIGHT = 28
 # 分数
 score = 0
-
+# 背景
+grass = pygame.image.load('grass.png')
+over = pygame.image.load('gameover.png')
+# pygame.mixer.music.load('resources/audio/moonlight.wav')
+# pygame.mixer.music.set_volume(0.5)
+# pygame.mixer.music.play(-1,0.0)
 # 食物
 class Food(object):
     def __init__(self):
@@ -101,8 +106,17 @@ class Snake(object):
 def init_board(screen):
     board_width = BOARDWIDTH
     board_height = BOARDHEIGHT
-    color = 10, 255, 255
-    width = 0
+
+    #显示草地图片，设置图片坐标
+    if board_width % grass.get_width() != 0: #草地横向复制
+        grass_w = board_width // grass.get_width() + 1
+    if board_height % grass.get_height()!=0: #草地纵向复制
+        grass_h = board_height // grass.get_height() + 1
+    for j in range(6):
+        for i in range(10):
+            screen.blit(grass,(i * grass.get_width(),j * grass.get_height()))
+    #color = 10, 255, 255
+    #width = 0
     # width:x, height:y
     # 左右边框占用了 X: 0 35*20
     # for i in range(board_width):
@@ -149,6 +163,7 @@ def print_text(screen, font, x, y, text, color=(255, 0, 0)):
     screen.blit(imgText, (x, y))
 
 
+
 # 按键
 def press(keys, snake):
     global score
@@ -183,9 +198,9 @@ def game_init():
     screen = pygame.display.set_mode((BOARDWIDTH * 20, BOARDHEIGHT * 20))
     # 设置游戏标题
     pygame.display.set_caption('贪吃蛇')
-    # sound = pygame.mixer.Sound(AUDIONAME)
-    # channel = pygame.mixer.find_channel(True)
-    # channel.play(sound)
+     #sound = pygame.mixer.Sound(AUDIONAME)
+     #channel = pygame.mixer.find_channel(True)
+     #channel.play(sound)
     return screen
 
 
@@ -209,11 +224,13 @@ def game(screen):
         # 游戏失败打印提示
         if is_fail:
             font2 = pygame.font.Font(None, 40)
-            print_text(screen, font2, 400, 200, "GAME OVER")
+            print_text(screen, font, 400, 400, text)
+            screen.blit(over, (150,30))
         # 游戏主进程
         if not is_fail:
             enlarge = snake.eat_food(food)
-            text = u"分数: {}".format(score)
+            text = "分数: {}".format(score)
+            finally_score = "分数".format(score)
             print_text(screen, font, 0, 0, text)
             food.update(screen, enlarge, snake)
             snake.move(enlarge)
