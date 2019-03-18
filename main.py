@@ -224,7 +224,7 @@ def game(screen):
         time.sleep(0.1)
 
 
-# 主程序1
+# 主程序
 def main():
     screen = game_init()
     game(screen)
