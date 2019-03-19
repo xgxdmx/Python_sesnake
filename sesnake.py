@@ -257,7 +257,5 @@ def game(screen):
 def main():
     screen = game_init()
     game(screen)
-
-
 if __name__ == '__main__':
     main()
