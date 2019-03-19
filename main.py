@@ -20,7 +20,7 @@ class Food(object):
 
     # 画出食物
     def _draw(self, screen, i, j):
-        color = 255, 0, 255
+        color = 255, 0, 0
         radius = 10
         width = 10
         # i:1---34   j:1---25
@@ -87,14 +87,14 @@ class Snake(object):
         radius = 15
         width = 15
         # i:1---34   j:1---25
-        color = 255, 0, 0
+        color = 192, 122, 219
         # position 为图形的坐标
         position = 10 + 20 * self.item[0][0], 10 + 20 * self.item[0][1]
         pygame.draw.circle(screen, color, position, radius, width)
         # 蛇身为半径为 10 的黄色实心圆
         radius = 10
         width = 10
-        color = 255, 255, 0
+        color = 73, 156, 84
         for i, j in self.item[1:]:
             position = 10 + 20 * i, 10 + 20 * j
             pygame.draw.circle(screen, color, position, radius, width)
@@ -196,8 +196,9 @@ def game_init():
     screen = pygame.display.set_mode((BOARDWIDTH * 20, BOARDHEIGHT * 20))
     # 设置游戏标题
     pygame.display.set_caption('贪吃蛇')
+    # 背景音乐
     pygame.mixer.music.load('./bgm.mp3')
-    pygame.mixer.music.set_volume(10)
+    pygame.mixer.music.set_volume(30)
     pygame.mixer.music.play(-1, 0.0)
 
     return screen
