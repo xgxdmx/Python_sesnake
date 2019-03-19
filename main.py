@@ -1,5 +1,6 @@
 import pygame
 import time
+
 import numpy as np
 # 此模块包含游戏所需的常量
 from pygame.locals import *
@@ -12,9 +13,6 @@ score = 0
 # 背景
 grass = pygame.image.load('grass.png')
 over = pygame.image.load('gameover.png')
-# pygame.mixer.music.load('resources/audio/moonlight.wav')
-# pygame.mixer.music.set_volume(0.5)
-# pygame.mixer.music.play(-1,0.0)
 # 食物
 class Food(object):
     def __init__(self):
@@ -198,9 +196,10 @@ def game_init():
     screen = pygame.display.set_mode((BOARDWIDTH * 20, BOARDHEIGHT * 20))
     # 设置游戏标题
     pygame.display.set_caption('贪吃蛇')
-     #sound = pygame.mixer.Sound(AUDIONAME)
-     #channel = pygame.mixer.find_channel(True)
-     #channel.play(sound)
+    pygame.mixer.music.load('./bgm.mp3')
+    pygame.mixer.music.set_volume(10)
+    pygame.mixer.music.play(-1, 0.0)
+
     return screen
 
 
@@ -209,7 +208,7 @@ def game(screen):
     snake = Snake()
     food = Food()
     # 设置中文字体和大小
-    font = pygame.font.SysFont('SimHei', 20)
+    font = pygame.font.Font('./FZSJ-XLLJW.TTF', 40)
     is_fail = 0
     while True:
         for event in pygame.event.get():
@@ -223,14 +222,24 @@ def game(screen):
         press(keys, snake)
         # 游戏失败打印提示
         if is_fail:
-            font2 = pygame.font.Font(None, 40)
             print_text(screen, font, 400, 400, text)
             screen.blit(over, (150,30))
+            screen.blit(time_image, (430, 450))
         # 游戏主进程
         if not is_fail:
             enlarge = snake.eat_food(food)
             text = "分数: {}".format(score)
-            finally_score = "分数".format(score)
+            # 倒计时
+            total_time = 0  # 分钟
+            taken_time = pygame.time.get_ticks()  # 毫秒
+            left_time = total_time * 60000 + taken_time  # 毫秒
+            time_min = left_time // 60000
+            time_sec = left_time % 60000 // 1000
+            time_text = str(time_min).zfill(2) + ':' + str(time_sec).zfill(2)
+            time_font = pygame.font.Font('./FZSJ-XLLJW.TTF', 44)
+            time_image = time_font.render(time_text, True, (0, 0, 0))
+            screen.blit(time_image, (800, 10))
+
             print_text(screen, font, 0, 0, text)
             food.update(screen, enlarge, snake)
             snake.move(enlarge)
