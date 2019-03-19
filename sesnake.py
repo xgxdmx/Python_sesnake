@@ -1,6 +1,5 @@
 import pygame
 import time
-
 import numpy as np
 # 此模块包含游戏所需的常量
 from pygame.locals import *
@@ -16,19 +15,21 @@ over = pygame.image.load('gameover.png')
 
 
 # 食物
+def _draw(screen, i, j):
+    color = 255, 0, 0
+    radius = 10
+    width = 10
+    # i:1---34   j:1---25
+    position = 10 + 20 * i, 10 + 20 * j
+    # 画出半径为 10 的粉色实心圆
+    pygame.draw.circle(screen, color, position, radius, width)
+
+
 class Food(object):
     def __init__(self):
         self.item = (4, 5)
 
     # 画出食物
-    def _draw(self, screen, i, j):
-        color = 255, 0, 0
-        radius = 10
-        width = 10
-        # i:1---34   j:1---25
-        position = 10 + 20 * i, 10 + 20 * j
-        # 画出半径为 10 的粉色实心圆
-        pygame.draw.circle(screen, color, position, radius, width)
 
     # 随机产生食物
     def update(self, screen, enlarge, snake):
@@ -36,7 +37,7 @@ class Food(object):
             self.item = np.random.randint(1, BOARDWIDTH - 2), np.random.randint(1, BOARDHEIGHT - 2)
             while self.item in snake.item:
                 self.item = np.random.randint(1, BOARDWIDTH - 2), np.random.randint(1, BOARDHEIGHT - 2)
-        self._draw(screen, self.item[0], self.item[1])
+        _draw(screen, self.item[0], self.item[1])
 
 
 # 贪吃蛇
@@ -109,9 +110,9 @@ def init_board(screen):
 
     # 显示草地图片，设置图片坐标
     if board_width % grass.get_width() != 0:  # 草地横向复制
-        grass_w = board_width // grass.get_width() + 1
+        pass
     if board_height % grass.get_height() != 0:  # 草地纵向复制
-        grass_h = board_height // grass.get_height() + 1
+        pass
     for j in range(6):
         for i in range(10):
             screen.blit(grass, (i * grass.get_width(), j * grass.get_height()))
@@ -201,12 +202,12 @@ def game_init():
     pygame.mixer.music.load('./bgm.mp3')
     pygame.mixer.music.set_volume(30)
     pygame.mixer.music.play(-1, 0.0)
-
     return screen
 
 
 # 开始游戏
 def game(screen):
+    global time_image, text
     snake = Snake()
     food = Food()
     # 设置中文字体和大小
