@@ -53,6 +53,10 @@ class Snake(object):
 
     def move(self, enlarge):
         # enlarge 标记贪吃蛇有没有吃到食物
+        if enlarge:
+            shoot = pygame.mixer.Sound('./shoot.wav')
+            shoot.set_volume(5)
+            shoot.play()
         if not enlarge:
             # 没吃到食物删除尾部元素
             self.item.pop()
@@ -60,7 +64,6 @@ class Snake(object):
         head = (self.item[0][0] + self.x, self.item[0][1] + self.y)
         # 将新的蛇头坐标插入在 list 最前面
         self.item.insert(0, head)
-
     def eat_food(self, food):
         global score
         # snake_x,snake_y 蛇头坐标
@@ -240,9 +243,9 @@ def game(screen):
             time_sec = left_time % 60000 // 1000
             time_text = str(time_min).zfill(2) + ':' + str(time_sec).zfill(2)
             time_font = pygame.font.Font('./FZSJ-XLLJW.TTF', 44)
-            time_image = time_font.render(time_text, True, (0, 0, 0))
+            time_image = time_font.render(time_text, True, (0, 0, 255))
             screen.blit(time_image, (800, 10))
-
+            # 打印分数
             print_text(screen, font, 0, 0, text)
             food.update(screen, enlarge, snake)
             snake.move(enlarge)
