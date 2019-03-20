@@ -110,7 +110,8 @@ class Snake(object):
 def init_board(screen):
     board_width = BOARDWIDTH
     board_height = BOARDHEIGHT
-
+    color = 10, 255, 255
+    width = 0
     # 显示草地图片，设置图片坐标
     if board_width % grass.get_width() != 0:  # 草地横向复制
         pass
@@ -119,6 +120,14 @@ def init_board(screen):
     for j in range(6):
         for i in range(10):
             screen.blit(grass, (i * grass.get_width(), j * grass.get_height()))
+        # width:x, height:y
+        # 左右边框占用了 X: 0 35*20
+    for i in range(board_width):
+        pos = i * 20, 0, 20, 40
+        pygame.draw.rect(screen, color, pos, width)
+        # pygame.draw.rect(screen, color, pos, width)
+        # 上下边框占用了 Y: 0 26*20
+
 
 # 游戏失败
 def game_over(snake):
@@ -133,7 +142,7 @@ def game_over(snake):
     # 撞到边框
     if broad_x == 0 or broad_x == BOARDWIDTH - 1:
         flag = 1
-    if broad_y == 0 or broad_y == BOARDHEIGHT - 1:
+    if broad_y == 2 or broad_y == BOARDHEIGHT - 1:
         flag = 1
 
     if flag:
@@ -216,7 +225,7 @@ def game(screen):
         # 游戏失败打印提示
         if is_fail:
             print_text(screen, font, 400, 400, text)
-            screen.blit(over, (150, 30))
+            screen.blit(over, (150, 50))
             screen.blit(time_image, (430, 450))
         # 游戏主进程
         if not is_fail:
@@ -231,7 +240,7 @@ def game(screen):
             time_text = str(time_min).zfill(2) + ':' + str(time_sec).zfill(2)
             time_font = pygame.font.Font('./FZSJ-XLLJW.TTF', 44)
             time_image = time_font.render(time_text, True, (0, 0, 255))
-            screen.blit(time_image, (800, 10))
+            screen.blit(time_image, (800, -1))
             # 打印分数
             print_text(screen, font, 0, 0, text)
             food.update(screen, enlarge, snake)
