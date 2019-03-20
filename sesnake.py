@@ -34,9 +34,9 @@ class Food(object):
     # 随机产生食物
     def update(self, screen, enlarge, snake):
         if enlarge:
-            self.item = np.random.randint(1, BOARDWIDTH - 2), np.random.randint(1, BOARDHEIGHT - 2)
+            self.item = np.random.randint(1, BOARDWIDTH - 2), np.random.randint(3, BOARDHEIGHT - 2)
             while self.item in snake.item:
-                self.item = np.random.randint(1, BOARDWIDTH - 2), np.random.randint(1, BOARDHEIGHT - 2)
+                self.item = np.random.randint(1, BOARDWIDTH - 2), np.random.randint(3, BOARDHEIGHT - 2)
         _draw(screen, self.item[0], self.item[1])
 
 
