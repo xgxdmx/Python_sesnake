@@ -16,7 +16,7 @@ over = pygame.image.load('gameover.png')
 
 # 食物
 def _draw(screen, i, j):
-    color = 255, 0, 0
+    color = 255, 255, 0
     radius = 10
     width = 10
     # i:1---34   j:1---25
@@ -55,7 +55,7 @@ class Snake(object):
         # enlarge 标记贪吃蛇有没有吃到食物
         if enlarge:
             shoot = pygame.mixer.Sound('./shoot.wav')
-            shoot.set_volume(5)
+            shoot.set_volume(0.3)
             shoot.play()
         if not enlarge:
             # 没吃到食物删除尾部元素
@@ -119,22 +119,6 @@ def init_board(screen):
     for j in range(6):
         for i in range(10):
             screen.blit(grass, (i * grass.get_width(), j * grass.get_height()))
-    # color = 10, 255, 255
-    # width = 0
-    # width:x, height:y
-    # 左右边框占用了 X: 0 35*20
-    # for i in range(board_width):
-    #     pos = i * 20, 0, 20, 20
-    #     pygame.draw.rect(screen, color, pos, width)
-    #     pos = i * 20, (board_height - 1) * 20, 20, 20
-    #     pygame.draw.rect(screen, color, pos, width)
-    # # 上下边框占用了 Y: 0 26*20
-    # for i in range(board_height - 1):
-    #     pos = 0, 20 + i * 20, 20, 20
-    #     pygame.draw.rect(screen, color, pos, width)
-    #     pos = (board_width - 1) * 20, 20 + i * 20, 20, 20
-    #     pygame.draw.rect(screen, color, pos, width)
-
 
 # 游戏失败
 def game_over(snake):
@@ -153,6 +137,9 @@ def game_over(snake):
         flag = 1
 
     if flag:
+        explode = pygame.mixer.Sound('./explode.wav')
+        explode.set_volume(3)
+        explode.play()
         return True
     else:
         return False
